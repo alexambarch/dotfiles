@@ -1,0 +1,105 @@
+* Top of file clause
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  (when no-ssl
+    (warn "\
+Your version of Emacs does not support SSL connections,
+which is unsafe because it allows man-in-the-middle attacks.
+There are two things you can do about this warning:
+1. Install an Emacs version that does support SSL and be safe.
+2. Remove this warning from your init file so you won't see it again."))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+
+    (add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize) 
+(require 'use-package)
+#+END_SRC
+* Display
+** Emacs display defaults
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+(global-linum-mode 1)
+#+END_SRC
+** Powerline
+#+BEGIN_SRC emacs-lisp
+(use-package telephone-line
+    :ensure t
+    :config
+    (setq telephone-line-lhs
+        '((evil   . (telephone-line-evil-tag-segment))
+         (accent . (telephone-line-vc-segment
+                    telephone-line-erc-modified-channels-segment
+                    telephone-line-process-segment))
+         (nil    . (telephone-line-minor-mode-segment
+                    telephone-line-buffer-segment))))
+    (setq telephone-line-rhs
+        '((nil    . (telephone-line-misc-info-segment))
+         (accent . (telephone-line-major-mode-segment))
+         (evil   . (telephone-line-airline-position-segment))))
+    (telephone-line-mode t))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** Theming
+#+BEGIN_SRC emacs-lisp
+# Match my emacs theme to the rest of my system themes
+(use-package xresources-theme
+    :ensure t
+    :init
+    (load-theme xresources-theme))
+#+END_SRC
+* Movement
+** evil-mode
+#+BEGIN_SRC emacs-lisp
+(use-package evil-mode
+    :ensure t
+    :config
+    (evil-mode 1))
+#+END_SRC
+** avy
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char))
+#+END_SRC
+* Helm
+** helm
+#+BEGIN_SRC emacs-lisp
+(use-package helm
+    :ensure t
+    :bind (("C-x C-f" . helm-find-files)
+           ("C-x b" . helm-buffers-list)
+	   ("C-s" . helm-ag-this-file)
+	   ("C-c p h" . helm-projectile)
+           ("M-x" . helm-M-x)
+	   ("M-y" . helm-show-kill-ring))
+    :config
+    (helm-mode 1))
+#+END_SRC
+* IDE Features
+** Autocompletion
+*** company-mode
+*** Backends
+** Tags
+** Project Management
+*** Projectile
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+    :ensure t
+    :config
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+#+END_SRC
+** Language Major Modes
