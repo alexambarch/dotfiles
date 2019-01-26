@@ -77,6 +77,7 @@ There are two things you can do about this warning:
 #+END_SRC
 ** Language Major Modes
 *** Web Modes
+**** HTML, CSS, JS
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
     :ensure t
@@ -92,6 +93,13 @@ There are two things you can do about this warning:
     (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
     (add-hook 'web-mode-hook #'emmet-mode))
+#+END_SRC
+**** Vue + Electron (kill me)
+#+BEGIN_SRC emacs-lisp
+(use-package vue-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode)))
 #+END_SRC
 ** Git Integration
 *** Magit!
