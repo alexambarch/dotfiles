@@ -64,11 +64,6 @@ There are two things you can do about this warning:
 ** Autocompletion
 *** company-mode
 *** Backends
-*** racer
-#+BEGIN_SRC emacs-lisp
-(use-package racer
-    :ensure t)
-#+END_SRC
 ** Tags
 ** Project Management
 *** Projectile
