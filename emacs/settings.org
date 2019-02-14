@@ -21,6 +21,14 @@ There are two things you can do about this warning:
 (package-initialize) 
 (require 'use-package)
 #+END_SRC
+* Display
+** Emacs display defaults
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+(global-linum-mode 1)
+#+END_SRC
 * Movement
 ** avy
 #+BEGIN_SRC emacs-lisp
@@ -35,35 +43,43 @@ There are two things you can do about this warning:
     :config
     (evil-mode 1))
 #+END_SRC
-* Display
-** Emacs display defaults
-#+BEGIN_SRC emacs-lisp
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
-(global-linum-mode 1)
-#+END_SRC
-** Powerline
-#+BEGIN_SRC emacs-lisp
-(use-package telephone-line
-    :ensure t
-    :config
-    (setq telephone-line-lhs
-        '((accent . (telephone-line-vc-segment
-                    telephone-line-erc-modified-channels-segment
-                    telephone-line-process-segment))
-         (nil    . (telephone-line-minor-mode-segment
-                    telephone-line-buffer-segment))))
-    (setq telephone-line-rhs
-        '((nil    . (telephone-line-misc-info-segment))
-         (accent . (telephone-line-major-mode-segment))
-         (evil   . (telephone-line-airline-position-segment))))
-    (telephone-line-mode t))
-#+END_SRC
 * IDE Features
 ** Autocompletion
-*** company-mode
-*** Backends
+*** Company
+#+BEGIN_SRC emacs-lisp
+(use-package company
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode))
+#+END_SRC
+*** Company backends
+**** Irony
+***** Irony Setup
+#+BEGIN_SRC emacs-lisp
+(use-package irony
+    :ensure t)
+#+END_SRC
+***** company-irony
+#+BEGIN_SRC emacs-lisp
+(use-package company-irony
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-irony))
+#+END_SRC
+*** Semantic
+#+BEGIN_SRC emacs-lisp
+(use-package semantic
+    :ensure t
+    :config
+    (add-hook 'company-mode-hook 'semantic-mode))
+#+END_SRC
+*** Smartparens
+#+BEGIN_SRC emacs-lisp
+(use-package smartparens
+    :ensure t
+    :config
+    (smartparens-global-mode 1))
+#+END_SRC
 ** Tags
 ** Project Management
 *** Projectile
@@ -76,6 +92,10 @@ There are two things you can do about this warning:
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 #+END_SRC
 ** Language Major Modes
+*** C Mode
+#+BEGIN_SRC emacs-lisp
+(setq c-basic-offset 4)
+#+END_SRC
 *** Web Modes
 **** HTML, CSS, JS
 #+BEGIN_SRC emacs-lisp
