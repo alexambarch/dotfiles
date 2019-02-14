@@ -57,7 +57,10 @@ There are two things you can do about this warning:
 ***** Irony Setup
 #+BEGIN_SRC emacs-lisp
 (use-package irony
-    :ensure t)
+    :ensure t
+    :config
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 #+END_SRC
 ***** company-irony
 #+BEGIN_SRC emacs-lisp
@@ -80,16 +83,12 @@ There are two things you can do about this warning:
     :config
     (smartparens-global-mode 1))
 #+END_SRC
-** Tags
-** Project Management
-*** Projectile
+** Git Integration
+*** Magit!
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
+(use-package magit
     :ensure t
-    :config
-    (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+    :bind ("C-x g" . magit-status))
 #+END_SRC
 ** Language Major Modes
 *** C Mode
@@ -121,13 +120,32 @@ There are two things you can do about this warning:
     :config
     (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode)))
 #+END_SRC
-** Git Integration
-*** Magit!
+** Project Management
+*** Projectile
 #+BEGIN_SRC emacs-lisp
-(use-package magit
+(use-package projectile
     :ensure t
-    :bind ("C-x g" . magit-status))
+    :config
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 #+END_SRC
+** Syntax Checking
+*** flycheck
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode 1)
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+#+END_SRC
+*** flycheck-irony
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck-irony
+    :ensure t)
+#+END_SRC
+** Tags
 * Helm
 ** helm
 #+BEGIN_SRC emacs-lisp
@@ -135,7 +153,6 @@ There are two things you can do about this warning:
     :ensure t
     :bind (("C-x C-f" . helm-find-files)
            ("C-x b" . helm-buffers-list)
-	   ("C-s" . helm-ag-this-file)
 	   ("C-c p h" . helm-projectile)
            ("M-x" . helm-M-x)
 	   ("M-y" . helm-show-kill-ring))
