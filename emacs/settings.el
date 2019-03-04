@@ -39,7 +39,10 @@ There are two things you can do about this warning:
     (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package irony
-    :ensure t)
+    :ensure t
+    :config
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 (use-package company-irony
     :ensure t
@@ -56,17 +59,9 @@ There are two things you can do about this warning:
     :config
     (smartparens-global-mode 1))
 
-(use-package ggtags
+(use-package magit
     :ensure t
-    :config
-    (add-hook 'c-mode-hook ggtags-mode))
-
-(use-package projectile
-    :ensure t
-    :config
-    (projectile-mode +1)
-    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+    :bind ("C-x g" . magit-status))
 
 (setq c-basic-offset 4)
 
@@ -90,17 +85,39 @@ There are two things you can do about this warning:
     :config
     (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode)))
 
-(use-package magit
+(use-package projectile
     :ensure t
-    :bind ("C-x g" . magit-status))
+    :config
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(use-package flycheck
+    :ensure t
+    :init
+    (global-flycheck-mode 1)
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+(use-package flycheck-irony
+    :ensure t)
 
 (use-package helm
     :ensure t
     :bind (("C-x C-f" . helm-find-files)
            ("C-x b" . helm-buffers-list)
-	   ("C-s" . helm-ag-this-file)
 	   ("C-c p h" . helm-projectile)
            ("M-x" . helm-M-x)
 	   ("M-y" . helm-show-kill-ring))
     :config
     (helm-mode 1))
+
+(use-package org
+    :bind (("C-c a" . org-agenda)
+           ("C-c l" . org-store-link)
+	   ("C-c c" . org-capture)
+	   ))
+    :config
+    (setq org-refile-targets '((~/gtd/school.org)
+                               (~/gtd/life.org)
+                               (~/gtd/work.org)))

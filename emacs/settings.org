@@ -145,7 +145,14 @@ There are two things you can do about this warning:
 (use-package flycheck-irony
     :ensure t)
 #+END_SRC
-** Tags
+** Snippets
+*** yasnippets
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippets
+    :ensure t
+    :config
+    (yas-global-mode 1))
+#+END_SRC
 * Helm
 ** helm
 #+BEGIN_SRC emacs-lisp
@@ -158,4 +165,16 @@ There are two things you can do about this warning:
 	   ("M-y" . helm-show-kill-ring))
     :config
     (helm-mode 1))
+#+END_SRC
+* Org Mode
+#+BEGIN_SRC emacs-lisp
+(use-package org
+    :bind (("C-c a" . org-agenda)
+           ("C-c l" . org-store-link)
+	   ("C-c c" . org-capture)
+	   ))
+    :config
+    (setq org-refile-targets '((~/gtd/school.org)
+                               (~/gtd/life.org)
+                               (~/gtd/work.org)))
 #+END_SRC
