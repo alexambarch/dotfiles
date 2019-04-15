@@ -34,7 +34,7 @@ There are two things you can do about this warning:
 #+BEGIN_SRC emacs-lisp
 (use-package avy
     :ensure t
-    :bind ("M-s" . avy-goto-char))
+    :bind ("C-c s" . avy-goto-char))
 #+END_SRC
 ** evil mode
 #+BEGIN_SRC emacs-lisp
@@ -88,7 +88,7 @@ There are two things you can do about this warning:
 #+BEGIN_SRC emacs-lisp
 (use-package magit
     :ensure t
-    :bind ("C-x g" . magit-status))
+    :bind ("C-c g" . magit-status))
 #+END_SRC
 ** Language Major Modes
 *** C Mode
@@ -145,7 +145,6 @@ There are two things you can do about this warning:
 (use-package flycheck-irony
     :ensure t)
 #+END_SRC
-** Snippets
 * Helm
 ** helm
 #+BEGIN_SRC emacs-lisp
