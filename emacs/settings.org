@@ -146,13 +146,6 @@ There are two things you can do about this warning:
     :ensure t)
 #+END_SRC
 ** Snippets
-*** yasnippets
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippets
-    :ensure t
-    :config
-    (yas-global-mode 1))
-#+END_SRC
 * Helm
 ** helm
 #+BEGIN_SRC emacs-lisp
